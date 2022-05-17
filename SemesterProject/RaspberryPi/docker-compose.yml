@@ -48,6 +48,9 @@ services:
     build: ./LogScooper
     env_file:
     - 'env.logscooper'
+    depends_on:
+    - 'influxdb'
+    - 'mqtt'
 
   influxdb:
     image: influxdb:1.8.4
