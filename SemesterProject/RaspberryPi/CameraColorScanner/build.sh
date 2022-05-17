@@ -1,6 +1,6 @@
 
 folder=./SemesterProject/RaspberryPi/CameraColorScanner
-tag=ghcr.io/devantler/software-engineering-f22/camera-color-scanner
+tag=ghcr.io/Peterzxcvbnm/sem-8-f22-individual/camera-color-scanner
 docker buildx build -o type=tar,dest=- --build-arg TARGETPLATFORM=linux/amd64 -f $folder/DockerfileBuild -t app:amd64 $folder > $folder/amd64.tar
 docker buildx build -o type=tar,dest=- --build-arg TARGETPLATFORM=linux/arm64 -f $folder/DockerfileBuild -t app:arm64 $folder > $folder/arm64.tar
 docker buildx build -o type=tar,dest=- --build-arg TARGETPLATFORM=linux/arm/v7 -f $folder/DockerfileBuild -t app:arm $folder > $folder/arm.tar

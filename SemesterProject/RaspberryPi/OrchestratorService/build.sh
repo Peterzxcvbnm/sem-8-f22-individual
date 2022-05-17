@@ -1,6 +1,6 @@
 
 folder=./SemesterProject/RaspberryPi/OrchestratorService
-tag=ghcr.io/devantler/software-engineering-f22/orchestrator-service
+tag=ghcr.io/Peterzxcvbnm/sem-8-f22-individual/orchestrator-service
 docker buildx build -o type=tar,dest=- --build-arg TARGETPLATFORM=linux/amd64 -f $folder/DockerfileBuild -t app:amd64 $folder > $folder/amd64.tar
 docker buildx build -o type=tar,dest=- --build-arg TARGETPLATFORM=linux/arm64 -f $folder/DockerfileBuild -t app:arm64 $folder > $folder/arm64.tar
 docker buildx build -o type=tar,dest=- --build-arg TARGETPLATFORM=linux/arm/v7 -f $folder/DockerfileBuild -t app:arm $folder > $folder/arm.tar
