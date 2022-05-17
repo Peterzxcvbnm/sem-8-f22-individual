@@ -32,7 +32,7 @@ if device disk1 is not full then
 	log state of disk1 at information level 
 	disk1 move empty slot to intakeZone
 	disk1 wait for new item
-	disk1 mark slot at intakeZone as in_progress 
+	disk1 mark slot at intakeZone as in_progress
 	disk1 move slot at intakeZone to cameraZone
 	camera1 scan color into currentItemColor 
 	log "Scanned colour: " currentItemColor at information level
@@ -43,5 +43,3 @@ if device disk1 is not full then
 		disk1 mark slot at cameraZone as complete in 20 seconds  
 	if variable currentItemColor is blue then  
 		disk1 mark slot at cameraZone as complete in 30 seconds
-
-log "Loop complete" at debug level

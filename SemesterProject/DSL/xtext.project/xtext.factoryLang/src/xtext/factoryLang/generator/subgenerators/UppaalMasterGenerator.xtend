@@ -28,11 +28,23 @@ class UppaalMasterGenerator {
 	static String currentDisc = "ERROR_NO_DISC";
 	
 	def static dispatch String generateLocation(LogOperation statement){
-		
+		'''
+		<location id="«getIdOfLocation('''log_at_«statement.level»_statement«statementsIndexer.indexOf(statement)»''')»">
+			<name>log_at_«statement.level»_statement«statementsIndexer.indexOf(statement)»</name>
+		</location>
+		'''
 	}
 	
 	def static dispatch String generateTransistion(LogOperation statement){
-		
+		val trans = '''
+		<transition>
+			<source ref="«lastTransistionState»"/>
+			<target ref="«getIdOfLocation('''log_at_«statement.level»_statement«statementsIndexer.indexOf(statement)»''')»"/>
+			<label kind="synchronisation">logChannel!</label>
+		</transition>
+		'''
+		lastTransistionState = getIdOfLocation('''log_at_«statement.level»_statement«statementsIndexer.indexOf(statement)»''')
+		return trans
 	}
 	
 	def static dispatch String generateLocation(DeviceConditional statement) {

@@ -108,6 +108,5 @@ async Task Run()
 				});
 			}
 		}
-		mqtt.SendMessage(MqttTopics.Orchestrator.LogString + "debug", "Loop complete");
 	}
 }

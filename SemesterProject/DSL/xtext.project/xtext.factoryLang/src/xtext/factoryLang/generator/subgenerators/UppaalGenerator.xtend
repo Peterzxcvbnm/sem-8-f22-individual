@@ -98,6 +98,7 @@ class UppaalGenerator {
 				//--------------------defaults------------------------
 				clock GlobalTimer;
 				broadcast chan emergencyStop;
+				chan logChannel;
 				
 				/**
 				1: Tried to remove item from empty disc slot
@@ -140,8 +141,30 @@ class UppaalGenerator {
 						«CameraGenerator.generate(camera)»
 					«ENDFOR»
 					«UppaalEmergencyButtonGenerator.generateUppaalEmergencyButtonTemplate()»
+					<template>
+						<name>Logger</name>
+						<location id="«getIdOfLocation("Idle")»" x="0" y="0">
+							<name x="-10" y="-34">Idle</name>
+						</location>
+						<location id="«getIdOfLocation("GotLog")»" x="212" y="0">
+							<name x="202" y="-34">GotLog</name>
+							<committed/>
+						</location>
+						<init ref="«getIdOfLocation("Idle")»"/>
+						<transition>
+							<source ref="«getIdOfLocation("GotLog")»"/>
+							<target ref="«getIdOfLocation("Idle")»"/>
+							<nail x="102" y="42"/>
+						</transition>
+						<transition>
+							<source ref="«getIdOfLocation("Idle")»"/>
+							<target ref="«getIdOfLocation("GotLog")»"/>
+							<label kind="synchronisation" x="18" y="-38">logChannel?</label>
+							<nail x="127" y="-42"/>
+						</transition>
+					</template>
 				<system>
-					system MasterController, «FOR disc : discs»«disc.name», «disc.name»_DiscSlot, «disc.name»_GetemptySlot, «FOR value: discSlotStateValues»«disc.name»_SlotVariable_«value», «disc.name»_Get«value»Slot,«ENDFOR»«ENDFOR» «FOR crane : cranes»«crane.name»,«crane.name»_CraneMagnet,«ENDFOR» «FOR camera : cameras»«camera.name»,«ENDFOR» EmergencyButton;
+					system MasterController, Logger, «FOR disc : discs»«disc.name», «disc.name»_DiscSlot, «disc.name»_GetemptySlot, «FOR value: discSlotStateValues»«disc.name»_SlotVariable_«value», «disc.name»_Get«value»Slot,«ENDFOR»«ENDFOR» «FOR crane : cranes»«crane.name»,«crane.name»_CraneMagnet,«ENDFOR» «FOR camera : cameras»«camera.name»,«ENDFOR» EmergencyButton;
 				</system>
 				«UppaalQueryGenerator.generateUpaalQuery(cranes.toList(), discs.toList(), cameras.toList())»
 			'''
