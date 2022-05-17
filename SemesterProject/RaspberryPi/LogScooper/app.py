@@ -44,7 +44,7 @@ def subscribe(client: mqtt, _topics: list, influxdbclient: InfluxDBClient):
             "fields": {
                     "message": message,
             },
-            "time": int(time.time() * 1000)
+            "time": int(time.time())
         }]
         influxdbclient.write_points(data, database=influxdbdatabase, time_precision='ms', batch_size=1, protocol='json')
 
