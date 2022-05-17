@@ -19,15 +19,21 @@ import static xtext.factoryLang.generator.subgenerators.UppaalGenerator.getIdOfL
 import static xtext.factoryLang.generator.subgenerators.UppaalGenerator.statementsIndexer
 import xtext.factoryLang.factoryLang.DiskStateValue
 import xtext.factoryLang.factoryLang.DISK_STATES
-import xtext.factoryLang.factoryLang.Variable
-import xtext.factoryLang.factoryLang.Camera
-import xtext.factoryLang.factoryLang.Parameter
 import xtext.factoryLang.factoryLang.Model
 import xtext.factoryLang.factoryLang.DiskWaitOperation
+import xtext.factoryLang.factoryLang.LogOperation
 
 class UppaalMasterGenerator {
 	static String lastTransistionState = "id0";
 	static String currentDisc = "ERROR_NO_DISC";
+	
+	def static dispatch String generateLocation(LogOperation statement){
+		
+	}
+	
+	def static dispatch String generateTransistion(LogOperation statement){
+		
+	}
 	
 	def static dispatch String generateLocation(DeviceConditional statement) {
 		var value = ""

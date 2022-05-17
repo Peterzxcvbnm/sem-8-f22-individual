@@ -22,7 +22,7 @@ for each diskSlot in disk1 that is complete then
 	crane1 pickup item at pickupPos
 	if variable diskSlot is red then  
 		crane1 drop item at outRed
-	if variable diskSlot is green then  
+	if variable diskSlot is green then
 		crane1 drop item at outGreen
 	if variable diskSlot is blue then  
 		crane1 drop item at outBlue

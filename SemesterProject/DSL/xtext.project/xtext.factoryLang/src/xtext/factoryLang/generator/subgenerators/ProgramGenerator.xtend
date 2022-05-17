@@ -79,7 +79,7 @@ class ProgramGenerator {
 			«FOR crane:cranes»
 				cranes.Add("«crane.name»", new Crane("«crane.name»", new Dictionary<string, int>()
 				{
-					«FOR target:crane.targets.map[it as CranePositionParameter] SEPARATOR ","»
+					«FOR target:crane.targets.filter[it instanceof CranePositionParameter].map[it as CranePositionParameter] SEPARATOR ","»
 						{"«target.name»", «target.degree»}
 					«ENDFOR»
 				}, mqtt));
@@ -91,7 +91,7 @@ class ProgramGenerator {
 			«FOR disk:disks»
 				disks.Add("«disk.name»", new Disk("«disk.name»", «(disk.slotParameter as DiskSlotParameter).size», new Dictionary<string, int>()
 				{
-					«FOR target:disk.targets.map[it as DiskZoneParameter] SEPARATOR ","»
+					«FOR target:disk.targets.filter[it instanceof DiskZoneParameter].map[it as DiskZoneParameter] SEPARATOR ","»
 						{"«target.name»", «target.slot»}
 					«ENDFOR»
 				}, mqtt));
@@ -103,7 +103,7 @@ class ProgramGenerator {
 			«FOR camera:cameras»
 				cameras.Add("«camera.name»", new Camera("«camera.name»", new List<string>()
 				{
-					«FOR target:camera.targets.map[it as CameraColorParameter] SEPARATOR ","»
+					«FOR target:camera.targets.filter[it instanceof CameraColorParameter].map[it as CameraColorParameter] SEPARATOR ","»
 						"«target.color»"
 					«ENDFOR»
 				}, mqtt));
@@ -250,6 +250,7 @@ class ProgramGenerator {
 					var «variableName» = await «deviceName».Scan();
 				'''
 			}
+			
 		}
 	}
 }
