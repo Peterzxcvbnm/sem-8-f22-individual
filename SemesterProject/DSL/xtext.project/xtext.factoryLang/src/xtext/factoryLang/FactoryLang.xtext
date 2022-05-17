@@ -17,23 +17,31 @@ Crane returns Device:
 	{Crane} 'crane' 'named' name=ID BEGIN targets+=CraneParameter+ END;
 
 CraneParameter returns Parameter:
-	CranePositionParameter;
+	CranePositionParameter | CraneLogLevelParameter;
 
 CranePositionParameter returns CraneParameter:
 	{CranePositionParameter} 'with' 'position' 'at' degree=INT 'named' name=ID;
+	
+CraneLogLevelParameter returns CraneParameter:
+	'with' 'log' 'level' level=LOG_LEVEL
+;
 
 // ----- CONFIGURATION:DISK ----- //
 Disk returns Device:
 	{Disk} 'disk' 'named' name=ID BEGIN slotParameter=DiskSlotParameter targets+=DiskParameter+ END;
 
 DiskParameter returns Parameter:
-	DiskZoneParameter;
+	DiskZoneParameter | DiskLogLevelParameter;
 
 DiskSlotParameter returns DiskParameter:
 	{DiskSlotParameter} 'with' size=INT 'slots';
 
 DiskZoneParameter returns DiskParameter:
 	{DiskZoneParameter} 'with' 'zone' 'named' name=ID 'at' 'slot' slot=INT;
+	
+DiskLogLevelParameter returns DiskParameter:
+	'with' 'log' 'level' level=LOG_LEVEL
+;
 
 // ----- CONFIGURATION:CAMERA ----- //
 Camera returns Device:
@@ -44,6 +52,10 @@ CameraParameter returns Parameter:
 
 CameraColorParameter returns CameraParameter:
 	{CameraColorParameter} 'with' 'scannable' 'color' color=COLOR;
+
+CameraLogLevelParameter:
+	'with' 'log' 'level' level=LOG_LEVEL
+;
 
 // ----- STATEMENTS ----- //
 Statement:
@@ -66,7 +78,32 @@ VariableConditional returns Conditional:
 
 // ----- STATEMENTS:OPERATIONS ----- //
 Operation returns Statement:
-	CraneOperation | DiskOperation | CameraOperation;
+	CraneOperation | DiskOperation | CameraOperation | LogOperation;
+	
+// ----- STATEMENTS:OPERATIONS:LOG -----//
+LogOperation returns Operation:
+	LogAnyOperation
+;
+
+LogAnyOperation returns LogOperation:
+	'log' target=LogTarget 'at' level=LOG_LEVEL 'level'
+;
+
+LogTarget:
+	LogVariableTarget | LogDeviceStateTarget | LogStringTarget
+;
+
+LogVariableTarget:
+	first=STRING? variable=[Variable] second=STRING?
+;
+
+LogDeviceStateTarget:
+ 	'state' 'of' device=[Device]
+;
+
+LogStringTarget:
+	target=STRING
+;
 
 // ----- STATEMENTS:OPERATIONS:CRANE ----- //
 CraneOperation returns Operation:
@@ -162,6 +199,10 @@ enum DISK_STATES:
 
 enum TIME:
 	SECONDS='seconds' | SECOND='second' | MINUTES='minutes' | MINUTE='minute' | HOURS='hours' | HOUR='hour';
+	
+enum LOG_LEVEL:
+	ERROR='error' | WARNING='warning' | INFORMATION='information' | DEBUG='debug'
+;
 
 // ----- TERMINALS ----- //
 terminal BEGIN:

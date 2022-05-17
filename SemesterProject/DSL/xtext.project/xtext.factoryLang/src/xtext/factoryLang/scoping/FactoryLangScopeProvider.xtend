@@ -40,6 +40,8 @@ class FactoryLangScopeProvider extends AbstractFactoryLangScopeProvider {
 				return getVariableScope(context, context)
 			case Literals.DEVICE_VALUE__REF:
 				return getDeviceValueRefScope(context as DeviceValue)
+			case Literals.LOG_VARIABLE_TARGET__VARIABLE:
+				return getVariableScope(context, context)
 		}
 		return super.getScope(context, reference)
 	}
