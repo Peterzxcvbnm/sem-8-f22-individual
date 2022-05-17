@@ -11,7 +11,7 @@ namespace Mqtt
     public class MqttService : IMqttService
     {
         private const string ClientId = "OrchestratorService";
-        private const string Ip = "192.168.10.1";
+        private const string Ip = "192.168.0.10";
         private const int Port = 1883;
 
         private readonly IManagedMqttClient _mqttClient;

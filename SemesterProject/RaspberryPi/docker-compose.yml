@@ -44,6 +44,7 @@ services:
   #     - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
   
   logscooper:
+    image: log_scooper
     build: ./LogScooper
     env_file:
     - 'env.logscooper'
