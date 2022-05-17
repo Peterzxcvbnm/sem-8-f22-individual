@@ -8,18 +8,18 @@ services:
     ports:
       - "1883:1883"
 
-  orchestrator:
-    restart: unless-stopped
-    image: "ghcr.io/peterzxcvbnm/sem-8-f22-individual/orchestrator-service:latest"
+  #orchestrator:
+  #  restart: unless-stopped
+  #  image: "ghcr.io/peterzxcvbnm/sem-8-f22-individual/orchestrator-service:latest"
          
-  camera:
-    restart: unless-stopped
-    image: "ghcr.io/peterzxcvbnm/sem-8-f22-individual/camera-color-scanner:latest"
-    devices:
-      - "/dev/video0:/dev/video0"
-      - "/dev/video1:/dev/video1"
-    volumes:
-      - "./image.bmp:/app/image.bmp:ro"
+  #camera:
+  #  restart: unless-stopped
+  #  image: "ghcr.io/peterzxcvbnm/sem-8-f22-individual/camera-color-scanner:latest"
+  #  devices:
+  #    - "/dev/video0:/dev/video0"
+  #    - "/dev/video1:/dev/video1"
+  #  volumes:
+  #    - "./image.bmp:/app/image.bmp:ro"
 
   grafana:
     image: grafana/grafana:latest
