@@ -41,9 +41,12 @@ public class Disk
 
     public async Task MoveSlot(string fromZoneName, string toZoneName)
     {
-        var fromZone = _zones[fromZoneName];
-        var toZone = _zones[toZoneName];
-        await MoveSlot(fromZone, toZone);
+        var zonesToMove = mod(_currentOffset + (_zones[toZoneName] - _zones[fromZoneName]), _slots.Count);
+        _currentOffset = zonesToMove;
+        await WaitTillIdle();
+        await _mqttService.SendMessage(MqttTopics.Disk(_name).Moving, "Running");
+        await _mqttService.SendMessage(MqttTopics.Disk(_name).Zone, zonesToMove.ToString()); //TODO: Test if this works, _currentOffset.ToString() might be correct
+        await WaitTillIdle();
     }
 
     public async Task MoveSlot(string fromZoneName, int toZone)
@@ -61,16 +64,6 @@ public class Disk
     public async Task MoveSlot(int fromZone, int toZone)
     {
         var zonesToMove = mod((toZone - fromZone), _slots.Count);
-        _currentOffset = zonesToMove;
-        await WaitTillIdle();
-        await _mqttService.SendMessage(MqttTopics.Disk(_name).Moving, "Running");
-        await _mqttService.SendMessage(MqttTopics.Disk(_name).Zone, zonesToMove.ToString()); //TODO: Test if this works, _currentOffset.ToString() might be correct
-        await WaitTillIdle();
-    }
-    
-    public async Task MoveZoneToZone(string fromZone, string toZone)
-    {
-        var zonesToMove = mod((_currentOffset + (_zones[toZone] - _zones[fromZone])), _slots.Count());
         _currentOffset = zonesToMove;
         await WaitTillIdle();
         await _mqttService.SendMessage(MqttTopics.Disk(_name).Moving, "Running");
@@ -203,5 +196,13 @@ public class Disk
     
     int mod(int x, int m) {
         return (x%m + m)%m;
+    }
+    
+    public string GetState()
+    {
+        var slotStates = _slots.Select(kv => kv.Value.GetState());
+        var sb = new StringBuilder();
+        sb.AppendJoin("\n", slotStates);
+        return $"{_name} is at offset: {_currentOffset} with slots:\n{sb}";
     }
 }

@@ -7,6 +7,7 @@ namespace Entities
         private readonly string _name;
         private readonly Dictionary<string, int> _positions;
         private readonly IMqttService _mqttService;
+		                private int _currentPosition = 0;
 
         public Crane(string name,Dictionary<string, int> positions, IMqttService mqttService)
         {
@@ -26,6 +27,7 @@ namespace Entities
             await _mqttService.SendMessage(MqttTopics.Crane(_name).Moving, "Running");
             await _mqttService.SendMessage(MqttTopics.Crane(_name).Angle, _positions[positionName].ToString());
             await WaitTillIdle();
+	                        _currentPosition = _positions[positionName];
         }
 
         public async Task GoTo(int position)
@@ -34,6 +36,7 @@ namespace Entities
             await _mqttService.SendMessage(MqttTopics.Crane(_name).Moving, "Running");
             await _mqttService.SendMessage(MqttTopics.Crane(_name).Angle, position.ToString());
             await WaitTillIdle();
+	                        _currentPosition = position;
         }
 
         public async Task PickupItem()
@@ -74,5 +77,10 @@ namespace Entities
         {
             return _name;
         }
+               
+        public string GetState() => 
+            _positions.ContainsValue(_currentPosition) ?
+                $"{_name} is at position: {_positions.First(x => x.Value == _currentPosition).Key} with a {_positions} degree angle"
+                : $"{_name} is at a {_positions} degree angle";
     }
 }
