@@ -1,0 +1,29 @@
+{
+    "Logging": {
+        "LogLevel": {
+            "Default": "Debug",
+            "System": "Information",
+            "Microsoft": "Information"
+        }
+    },
+    "MQTT": {
+        "Hostname": "172.17.0.1",
+        "Port": 1883,
+        "Username": "mydevice",
+        "Password": "mydevice",
+        "ClientId": "CameraColorScanner",
+        "CommandTopic": "camera1/command",
+        "ResultTopic": "camera1/result",
+        "ScanningTopic": "camera1/scanning",
+        "LogTopic": "log/camera1",
+        "UseSsl": true
+    },
+    "Camera": {
+        "Crop":{
+            "x": 320,
+            "y": 180,
+            "width": 640,
+            "height": 360
+        }
+    }
+}

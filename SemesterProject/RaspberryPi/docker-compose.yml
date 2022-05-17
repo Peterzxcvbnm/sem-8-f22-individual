@@ -1,0 +1,56 @@
+version: "3"
+services:
+  mqtt:
+    restart: unless-stopped
+    image: "eclipse-mosquitto"
+    volumes:
+      - "./mosquitto.conf:/mosquitto/config/mosquitto.conf"
+    ports:
+      - "1883:1883"
+
+  orchestrator:
+    restart: unless-stopped
+    image: "ghcr.io/devantler/software-engineering-f22/orchestrator-service:latest"
+         
+  camera:
+    restart: unless-stopped
+    image: "ghcr.io/devantler/software-engineering-f22/camera-color-scanner:latest"
+    devices:
+      - "/dev/video0:/dev/video0"
+      - "/dev/video1:/dev/video1"
+    volumes:
+      - "./image.bmp:/app/image.bmp:ro"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000" # expose for localhost
+    env_file:
+    - 'env.grafana'
+    links:
+    - influxdb
+    volumes:
+    - ./grafana.yml:/etc/grafana/provisioning/datasources/influxdb-telegraf.yml
+  
+  # telegraf:
+  #   image: telegraf:latest
+  #   container_name: telegraf
+  #   restart: unless-stopped
+  #   links:
+  #     - influxdb
+  #   volumes:
+  #     - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
+  
+  logscooper:
+    build: ./LogScooper
+    env_file:
+    - 'env.logscooper'
+
+  influxdb:
+    image: influxdb:1.8.4
+    container_name: influxdb
+    restart: unless-stopped
+    env_file:
+      - 'env.influxdb'

@@ -1,0 +1,71 @@
+@startuml component-diagram
+hide stereotype
+
+node RaspberryPi {
+    node Server {
+        component MQTT
+        database LoggingDatabase as "Logging Database"
+        component LogGatherer
+        component Orchestrator
+    }
+    node Camera as "Camera Color Sensor"{
+        component CameraLogic as "Camera Logic"{
+            artifact CameraLogicMqtt as "Mqtt Service"
+            artifact CameraImageProcessor as "Image Processor"
+        }
+        rectangle LightCurtainCamera as "Light Curtain"
+        rectangle webcam as "Webcam"
+    }
+    
+    
+    component WiFiAP as "WiFi AP"
+    WiFiAP -[hidden]left- Camera 
+    WiFiAP -[hidden]left- Server 
+    WiFiAP -[hidden]down- ESP32Crane 
+    WiFiAP -[hidden]down- ESP32Disc 
+}
+node ESP32Crane {
+    component ArduinoCraneLogic as "Crane Logic"{
+        artifact ArduinoCraneMqtt as "Mqtt Service"
+        artifact ArduinoCraneMagnet as "Magnet Manager"
+        artifact ArduinoCraneHoist as "Hoist Manager"
+        artifact ArduinoCraneRotation as "Rotation Manager"
+    }
+    rectangle RotationMotorCrane
+    rectangle ElectroMagnet
+    rectangle WireMotor
+    rectangle LightCurtainCrane as "Light Curtain"
+}
+
+node ESP32Disc {
+    component ArduinoDiscLogic as "Disc Logic"{
+        artifact ArduinoDiscMqtt as "Mqtt Service"
+        artifact ArduinoDiscRotation as "Rotation Manager"
+    }
+    rectangle RotationMotorDisc
+    rectangle LightCurtainDisc as "Light Curtain"
+}
+
+Orchestrator -left-> MQTT
+CameraLogic -right-> MQTT
+ArduinoCraneLogic -up-> MQTT
+ArduinoDiscLogic -up-> MQTT
+
+ArduinoCraneLogic -down-> RotationMotorCrane
+ArduinoCraneLogic -down-> WireMotor
+ArduinoCraneLogic -left-> ElectroMagnet
+ArduinoCraneLogic -left-> LightCurtainCrane
+
+ArduinoDiscLogic -down-> RotationMotorDisc
+ArduinoDiscLogic -down-> LightCurtainDisc
+
+CameraLogic -up-> LightCurtainCamera
+webcam <-down- CameraLogic
+
+LogGatherer --> MQTT
+LogGatherer -left-> LoggingDatabase
+
+ArduinoDiscLogic -up-> WiFiAP
+ArduinoCraneLogic -up-> WiFiAP
+skinparam linetype ortho
+@enduml

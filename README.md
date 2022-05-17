@@ -1,1 +1,3 @@
-# sem-8-f22-individual
+# software-engineering-f22
+
+Semesterproject and robotics programming project

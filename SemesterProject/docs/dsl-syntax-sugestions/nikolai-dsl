@@ -1,0 +1,98 @@
+-------------Syntax-------------
+device function:
+- disc:rotate @zone|empty|finished --> disc:zone zoneName
+- disc:slot @zone|empty|finished >> slotId
+- disc:set slotId := value|variableName
+- scanner:scan >> nameOfReturnVariable
+- crane:pickup @zone
+- crane:drop @zone
+
+transition
+- -->
+
+assign variable to device function 
+- =: variable
+
+retrieve variable 
+- @variable
+
+for
+- for color in disc:slot
+
+-------------Setup-------------
+create crane named "crane"
+with zone at 30 named "craneIn"
+with zone at 60 named "craneOut"
+with zone at 120 named "redBox"
+with zone at 140 named "greenBox"
+with zone at 160 named "blueBox"
+
+create storage named "disc"
+with capacity 8
+with zone at slot 1 named "discIn"
+with zone at slot 2 named "discOut"
+with zone at slot 3-7 named "waiting"
+with zone at slot 8 named "scanning"
+
+create camera named "scanner"
+with color red
+with color blue
+with color green
+-------------Compact-------------
+for disc:slot finished >> ref::
+    disc:rotate @ref --> disc:zone craneOut
+    crane:pickup @craneOut
+    if @ref.color is red::
+        crane:drop @redBox
+    if @ref.color is green::
+        crane:drop @greenBox
+    if @ref.color is blue::
+        crane:drop @blueBox
+        
+if disc:capacity > 0::
+    crane:pickup @craneIn
+    disc:rotate empty --> disc:zone discIn
+    crane:drop @craneOut
+    disc:rotate @discIn --> disc:zone scanning
+    scanner:scan >> color
+    disc:set @scanning := itemColor = color
+    if @scanning.itemColor is red::
+        disc:rotate @scanning --> disc:zone waiting
+        disc:set @waiting := wait = 30
+    if @scanning.itemColor is green::
+        disc:rotate @scanning --> disc:zone waiting
+        disc:set @waiting := wait = 20
+    if @scanning.itemColor is blue::
+        disc:rotate @scanning --> disc:zone waiting
+        disc:set @waiting := wait = 20
+
+-------------Readable-------------
+# Changed all symbols to text equivalents.
+# Changed order of commands for disc:set and if statements.
+# Some other small stuff to improve wording when not using symbols.
+for disc slot finished return ref then
+    disc rotate at ref to disc zone craneOut
+    crane pickup at craneOut
+    if red at ref.color then
+        crane drop at redBox
+    if green at ref.color  then
+        crane drop at greenBox
+    if blue at ref.color then
+        crane drop at blueBox
+        
+if disc capacity is not full then
+    crane pickup at craneIn
+    disc rotate empty to disc zone discIn
+    crane drop at craneOut
+    disc rotate at discIn to disc zone scanning
+    scanner scan return color
+    disc set itemColor to color at scanning
+    if red at scanning.itemColor then
+        disc rotate at scanning to disc zone waiting
+        disc set 30 to wait at waiting
+    if green at scanning.itemColor then
+        disc rotate at scanning to disc zone waiting
+        disc set 20 to wait at waiting
+    if blue at scanning.itemColor then
+        disc rotate at scanning to disc zone waiting
+        disc set 10 to wait at waiting

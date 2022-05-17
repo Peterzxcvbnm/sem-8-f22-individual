@@ -1,0 +1,60 @@
+@startuml infrastructure-v3
+hide stereotype
+
+node RaspberryPi {
+    node Server {
+        component MQTT
+        database LoggingDatabase as "Logging Database"
+        component LogGatherer
+        component Orchestrator
+    }
+    node Camera as "Camera Color Sensor"{
+        component cameraComponent as "Camera Logic"
+        rectangle LightCurtainCamera as "Light Curtain"
+        rectangle webcam as "Webcam"
+    }
+    
+    
+    component WiFiAP as "WiFi AP"
+    WiFiAP -[hidden]left- Camera 
+    WiFiAP -[hidden]left- Server 
+    WiFiAP -[hidden]down- ESP32Crane 
+    WiFiAP -[hidden]down- ESP32Disc 
+}
+node ESP32Crane {
+    component ArduinoCraneLogic as "Crane Logic"
+    rectangle RotationMotorCrane
+    rectangle ElectroMagnet
+    rectangle WireMotor
+    rectangle LightCurtainCrane as "Light Curtain"
+}
+
+node ESP32Disc {
+    component ArduinoDiscLogic as "Disc Logic"
+    rectangle RotationMotorDisc
+    rectangle LightCurtainDisc as "Light Curtain"
+}
+
+Orchestrator -left-> MQTT
+cameraComponent -right-> MQTT
+ArduinoCraneLogic -up-> MQTT
+ArduinoDiscLogic -up-> MQTT
+
+ArduinoCraneLogic -down-> RotationMotorCrane
+ArduinoCraneLogic  -down-> WireMotor
+ArduinoCraneLogic -down-> ElectroMagnet
+LightCurtainCrane <- ArduinoCraneLogic 
+
+ArduinoDiscLogic -down->RotationMotorDisc
+LightCurtainDisc <-left- ArduinoDiscLogic 
+
+cameraComponent -up-> LightCurtainCamera
+cameraComponent -up-> webcam
+
+LogGatherer --> MQTT
+LogGatherer -left-> LoggingDatabase
+
+ArduinoDiscLogic -up-> WiFiAP
+ArduinoCraneLogic -up-> WiFiAP
+skinparam linetype ortho
+@enduml

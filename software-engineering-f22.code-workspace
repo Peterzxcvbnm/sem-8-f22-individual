@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"plantuml.exportOutDir": ".",
+		"plantuml.exportSubFolder": false,
+		"markdownlint.config": {
+			"MD041": false
+		}
+	}
+}
