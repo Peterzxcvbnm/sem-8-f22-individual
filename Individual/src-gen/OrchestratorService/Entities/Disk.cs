@@ -197,4 +197,12 @@ public class Disk
     int mod(int x, int m) {
         return (x%m + m)%m;
     }
+    
+    public string GetState()
+    {
+        var slotStates = _slots.Select(kv => kv.Value.GetState());
+        var sb = new StringBuilder();
+        sb.AppendJoin("\n", slotStates);
+        return $"{_name} is at offset: {_currentOffset} with slots:\n{sb}";
+    }
 }

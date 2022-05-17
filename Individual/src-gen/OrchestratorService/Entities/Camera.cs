@@ -38,4 +38,9 @@ public class Camera
     {
         return _name;
     }
+    
+    public string GetState()
+    {
+        return $"{_name} has no state";
+    }
 }

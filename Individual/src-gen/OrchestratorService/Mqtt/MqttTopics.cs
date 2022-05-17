@@ -80,5 +80,15 @@ namespace Mqtt
 
             public string WaitForIntake { get => $"{Name}"; }
         }
+        
+        public static class Orchestrator
+        {
+			private const string Name = "Orchestrator";
+
+            public static string LogString = $"log/{Name}/message/";
+            public static string LogVariable = $"log/{Name}/variable/";
+            public static string LogDeviceState = $"log/{Name}/device/";
+            
+        }
     }
 }

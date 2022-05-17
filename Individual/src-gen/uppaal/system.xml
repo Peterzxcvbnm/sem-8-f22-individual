@@ -195,71 +195,71 @@ clock timer;</declaration>
 			<name>disk1_goto_intakeZone_statment14</name>
 		</location>
 		<location id="id37">
-			<name>disk1_markSlotfull_15</name>
+			<name>disk1_markSlotfull_16</name>
 		</location>
 		<location id="id38">
-			<name>disk1_markSlotin_progress_statement15</name>
+			<name>disk1_markSlotin_progress_statement16</name>
 		</location>
 		<location id="id39">
-			<name>disk1_goto_cameraZone_statement16</name>
+			<name>disk1_goto_cameraZone_statement17</name>
 		</location>
 		<location id="id40">
-			<name>camera1_scanItem_17</name>
+			<name>camera1_scanItem_18</name>
 			<committed/>
 		</location>
 		<location id="id41">
-			<name>camera1_itemColour_17</name>
+			<name>camera1_itemColour_18</name>
 		</location>
 		<location id="id42">
-			<name>disk1_markSlotColour_statement19</name>
+			<name>disk1_markSlotColour_statement20</name>
 		</location>
 		<location id="id43">
-			<name>currentItemColor_getred_20</name>
+			<name>currentItemColor_getred_21</name>
 			<label kind="invariant">GlobalTimer &lt; 10</label>
 		</location>
 		<location id="id44">
-			<name>currentItemColor_Isred_20</name>
+			<name>currentItemColor_Isred_21</name>
 		</location>
 		<location id="id45">
-			<name>currentItemColor_EndIfred_20</name>
+			<name>currentItemColor_EndIfred_21</name>
 		</location>
 		<location id="id46">
-			<name>disk1_markSlotcompleteIn10seconds_23</name>
+			<name>disk1_markSlotcompleteIn10seconds_24</name>
 		</location>
 		<location id="id47">
-			<name>disk1_markSlotcomplete_statement23</name>
+			<name>disk1_markSlotcomplete_statement24</name>
 		</location>
 		<location id="id48">
-			<name>currentItemColor_getgreen_21</name>
+			<name>currentItemColor_getgreen_22</name>
 			<label kind="invariant">GlobalTimer &lt; 10</label>
 		</location>
 		<location id="id49">
-			<name>currentItemColor_Isgreen_21</name>
+			<name>currentItemColor_Isgreen_22</name>
 		</location>
 		<location id="id50">
-			<name>currentItemColor_EndIfgreen_21</name>
+			<name>currentItemColor_EndIfgreen_22</name>
 		</location>
 		<location id="id51">
-			<name>disk1_markSlotcompleteIn20seconds_24</name>
+			<name>disk1_markSlotcompleteIn20seconds_25</name>
 		</location>
 		<location id="id52">
-			<name>disk1_markSlotcomplete_statement24</name>
+			<name>disk1_markSlotcomplete_statement25</name>
 		</location>
 		<location id="id53">
-			<name>currentItemColor_getblue_22</name>
+			<name>currentItemColor_getblue_23</name>
 			<label kind="invariant">GlobalTimer &lt; 10</label>
 		</location>
 		<location id="id54">
-			<name>currentItemColor_Isblue_22</name>
+			<name>currentItemColor_Isblue_23</name>
 		</location>
 		<location id="id55">
-			<name>currentItemColor_EndIfblue_22</name>
+			<name>currentItemColor_EndIfblue_23</name>
 		</location>
 		<location id="id56">
-			<name>disk1_markSlotcompleteIn30seconds_25</name>
+			<name>disk1_markSlotcompleteIn30seconds_26</name>
 		</location>
 		<location id="id57">
-			<name>disk1_markSlotcomplete_statement25</name>
+			<name>disk1_markSlotcomplete_statement26</name>
 		</location>
 		<init ref="id0"/>
 		<transition>

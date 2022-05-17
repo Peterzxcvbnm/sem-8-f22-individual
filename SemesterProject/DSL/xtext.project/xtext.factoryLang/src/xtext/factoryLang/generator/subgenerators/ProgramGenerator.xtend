@@ -25,6 +25,11 @@ import xtext.factoryLang.factoryLang.CameraScanOperation
 import xtext.factoryLang.factoryLang.impl.GlobalVariableImpl
 import xtext.factoryLang.parsers.EnumParser
 import xtext.factoryLang.factoryLang.DiskWaitOperation
+import xtext.factoryLang.factoryLang.LogOperation
+import xtext.factoryLang.factoryLang.LogStringTarget
+import xtext.factoryLang.factoryLang.LOG_LEVEL
+import xtext.factoryLang.factoryLang.LogVariableTarget
+import xtext.factoryLang.factoryLang.LogDeviceStateTarget
 
 class ProgramGenerator {
 
@@ -250,7 +255,27 @@ class ProgramGenerator {
 					var «variableName» = await «deviceName».Scan();
 				'''
 			}
-			
+			LogOperation:{
+				generateLogStatement(statement.target, statement.level)
+			}			
 		}
+	}
+	
+	def static dispatch String generateLogStatement(LogStringTarget target, LOG_LEVEL level){
+		'''
+		mqtt.SendMessage(MqttTopics.Orchestrator.LogString + "«level.toString()»", "«target.target»");
+		'''
+	}
+	
+	def static dispatch String generateLogStatement(LogVariableTarget target, LOG_LEVEL level){
+		'''
+		mqtt.SendMessage(MqttTopics.Orchestrator.LogVariable + "«level.toString()»", $"«target.first»{«target.variable.name»}«target.second»");
+		'''
+	}
+	
+	def static dispatch String generateLogStatement(LogDeviceStateTarget target, LOG_LEVEL level){
+		'''
+		mqtt.SendMessage(MqttTopics.Orchestrator.LogDeviceState + "«level.toString()»", «target.device.name».GetState());
+		'''
 	}
 }

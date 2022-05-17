@@ -52,6 +52,7 @@ async Task Run()
 	{
 		foreach (var diskSlot in disk1.GetSlotsWithMark(SlotState.Complete))
 		{
+			mqtt.SendMessage(MqttTopics.Orchestrator.LogVariable + "information", $"Complete slot: {diskSlot} of disk1");
 			await disk1.MoveSlot(diskSlot.Number, "craneZone");
 			await crane1.GoTo("pickupPos");
 			await crane1.PickupItem();
@@ -74,10 +75,13 @@ async Task Run()
 		}
 		if (!disk1.IsFull())
 		{
+			mqtt.SendMessage(MqttTopics.Orchestrator.LogDeviceState + "information", disk1.GetState());
 			await disk1.MoveSlot(disk1.GetEmptySlotNumber(), "intakeZone");
+			await disk1.WaitForIntake();
 			disk1.MarkSlot("intakeZone", SlotState.InProgress);
 			await disk1.MoveSlot("intakeZone", "cameraZone");
 			var currentItemColor = await camera1.Scan();
+			mqtt.SendMessage(MqttTopics.Orchestrator.LogVariable + "information", $"Scanned colour: {currentItemColor}");
 			disk1.MarkSlot("cameraZone", currentItemColor);
 			if (currentItemColor == "RED")
 			{
@@ -104,5 +108,6 @@ async Task Run()
 				});
 			}
 		}
+		mqtt.SendMessage(MqttTopics.Orchestrator.LogString + "debug", "Loop complete");
 	}
 }

@@ -45,4 +45,16 @@ public class Slot
     {
         _marks.Clear();
     }
+    
+    public string GetState()
+    {
+        var sb = new StringBuilder();
+        sb.AppendJoin(", ", _marks);
+        return $"Slot: {Number} has state: {SlotState} and marks: {sb}";
+    }
+    
+    public override string ToString()
+    {
+        return "Slot: " + Number;
+    }
 }

@@ -32,6 +32,7 @@ class EntityGenerator {
 				        private readonly string _name;
 				        private readonly Dictionary<string, int> _positions;
 				        private readonly IMqttService _mqttService;
+		                private int _currentPosition = 0;
 				
 				        public Crane(string name,Dictionary<string, int> positions, IMqttService mqttService)
 				        {
@@ -51,6 +52,7 @@ class EntityGenerator {
 				            await _mqttService.SendMessage(MqttTopics.Crane(_name).Moving, "Running");
 				            await _mqttService.SendMessage(MqttTopics.Crane(_name).Angle, _positions[positionName].ToString());
 				            await WaitTillIdle();
+	                        _currentPosition = _positions[positionName];
 				        }
 				
 				        public async Task GoTo(int position)
@@ -59,6 +61,7 @@ class EntityGenerator {
 				            await _mqttService.SendMessage(MqttTopics.Crane(_name).Moving, "Running");
 				            await _mqttService.SendMessage(MqttTopics.Crane(_name).Angle, position.ToString());
 				            await WaitTillIdle();
+	                        _currentPosition = position;
 				        }
 				
 				        public async Task PickupItem()
@@ -99,6 +102,11 @@ class EntityGenerator {
 				        {
 				            return _name;
 				        }
+				               
+				        public string GetState() => 
+				            _positions.ContainsValue(_currentPosition) ?
+				                $"{_name} is at position: {_positions.First(x => x.Value == _currentPosition).Key} with a {_positions} degree angle"
+				                : $"{_name} is at a {_positions} degree angle";
 				    }
 				}
 			'''
@@ -308,6 +316,14 @@ class EntityGenerator {
 				    int mod(int x, int m) {
 				        return (x%m + m)%m;
 				    }
+				    
+				    public string GetState()
+				    {
+				        var slotStates = _slots.Select(kv => kv.Value.GetState());
+				        var sb = new StringBuilder();
+				        sb.AppendJoin("\n", slotStates);
+				        return $"{_name} is at offset: {_currentOffset} with slots:\n{sb}";
+				    }
 				}
 			'''
 		)
@@ -356,6 +372,11 @@ class EntityGenerator {
 				    public string GetName()
 				    {
 				        return _name;
+				    }
+				    
+				    public string GetState()
+				    {
+				        return $"{_name} has no state";
 				    }
 				}
 			'''
@@ -412,6 +433,18 @@ class EntityGenerator {
 				    public void RemoveAllMarks()
 				    {
 				        _marks.Clear();
+				    }
+				    
+				    public string GetState()
+				    {
+				        var sb = new StringBuilder();
+				        sb.AppendJoin(", ", _marks);
+				        return $"Slot: {Number} has state: {SlotState} and marks: {sb}";
+				    }
+				    
+				    public override string ToString()
+				    {
+				        return "Slot: " + Number;
 				    }
 				}
 			'''

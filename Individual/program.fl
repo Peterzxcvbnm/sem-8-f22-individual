@@ -31,6 +31,7 @@ for each diskSlot in disk1 that is complete then
 if device disk1 is not full then 
 	log state of disk1 at information level 
 	disk1 move empty slot to intakeZone
+	disk1 wait for new item
 	disk1 mark slot at intakeZone as in_progress 
 	disk1 move slot at intakeZone to cameraZone
 	camera1 scan color into currentItemColor 
