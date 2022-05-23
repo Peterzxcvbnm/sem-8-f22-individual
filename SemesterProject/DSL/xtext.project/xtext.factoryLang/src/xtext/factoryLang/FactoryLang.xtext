@@ -48,7 +48,7 @@ Camera returns Device:
 	{Camera} 'camera' 'named' name=ID BEGIN targets+=CameraParameter+ END;
 
 CameraParameter returns Parameter:
-	CameraColorParameter;
+	CameraColorParameter | CameraLogLevelParameter;
 
 CameraColorParameter returns CameraParameter:
 	{CameraColorParameter} 'with' 'scannable' 'color' color=COLOR;
