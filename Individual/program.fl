@@ -43,3 +43,11 @@ if device disk1 is not full then
 		disk1 mark slot at cameraZone as complete in 20 seconds  
 	if variable currentItemColor is blue then  
 		disk1 mark slot at cameraZone as complete in 30 seconds
+		
+		
+		
+		
+		
+		
+		
+		

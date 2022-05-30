@@ -1,8 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Mqtt;
 
 namespace Entities;
@@ -205,8 +201,7 @@ public class Disk
     public string GetState()
     {
         var slotStates = _slots.Select(kv => kv.Value.GetState());
-        var sb = new 
-            StringBuilder();
+        var sb = new StringBuilder();
         sb.AppendJoin("\n", slotStates);
         return $"{_name} is at offset: {_currentOffset} with slots:\n{sb}";
     }
